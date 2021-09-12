@@ -1,0 +1,52 @@
+## Setup ssh access into server
+## https://askubuntu.com/questions/435615/disable-password-authentication-in-ssh
+## https://www.digitalocean.com/community/tutorials/how-to-harden-openssh-on-ubuntu-18-04
+## https://bobcares.com/blog/harden-ssh-ubuntu/
+---
+- name: Don't permit root login
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: "^PermitRootLogin"
+    line: "PermitRootLogin no"
+  notify: sshd restart
+
+- name: Limit max authentication sessions
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: "^MaxSessions"
+    line: "MaxSessions 10"
+  notify: sshd restart
+
+- name: Limit max authentication tries
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: "^MaxAuthTries"
+    line: "MaxAuthTries 6"
+  notify: sshd restart
+
+- name: Don't allow password based authentication
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: "^PasswordAuthentication"
+    line: "PasswordAuthentication no"
+  notify: sshd restart
+
+- name: Don't challenge response authentication
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: "^ChallengeResponseAuthentication"
+    line: "ChallengeResponseAuthentication no"
+  notify: sshd restart
+
+- name: Don't use PAM
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: "^UsePAM"
+    line: "UsePAM no"
+  notify: sshd restart

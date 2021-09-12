@@ -5,3 +5,9 @@ theme:
 nav:
     - Home: index.md
     - Users: users.md
+    - Node: node.md
+    - Microk8s:
+      - Install: install.md
+      - Update: update.md
+      - Reset: reset.md
+      - Uninstall: uninstall.md

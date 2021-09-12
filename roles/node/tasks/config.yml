@@ -1,0 +1,23 @@
+---
+- name: Suspend default ubuntu account
+  ansible.builtin.user:
+    name: ubuntu
+    state: present
+    password: '!'  # '!' Suspends Linux accounts
+    
+- name: Set hostname (from host.ini) in /etc/hostname
+  ansible.builtin.hostname:
+    name: "{{ hostname }}"
+  notify: server reboot
+    
+- name: Add hostname (from host.ini) to /etc/hosts
+  ansible.builtin.lineinfile:
+    path: '/etc/hosts'
+    state: present
+    regexp: '^127\.0\.0\.1[ \t]+localhost'
+    line: '127.0.0.1 localhost {{ hostname }}'
+  notify: server reboot
+
+- name: Set time zone for server
+  community.general.timezone:
+    name: "{{ TZ }}"

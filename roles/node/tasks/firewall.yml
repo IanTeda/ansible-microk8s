@@ -1,0 +1,50 @@
+- name: Enable IPv4 forwarding
+  ansible.posix.sysctl:
+    name: net.ipv4.ip_forward
+    value: "1"
+    state: present
+    reload: yes
+  notify: ufw reload
+
+- name: Enable IPv6 forwarding
+  ansible.posix.sysctl:
+    name: net.ipv6.conf.all.forwarding
+    value: "1"
+    state: present
+    reload: yes
+  notify: ufw reload
+
+- name: Allow SSH connections - anti lockout
+  community.general.ufw:
+    rule: allow
+    name: OpenSSH
+    comment: "ALLOW SSH port - anti lockout"
+  notify: ufw reload
+
+- name: Allow all access from RFC1918 networks
+  community.general.ufw:
+    rule: allow
+    src: '{{ item }}'
+    comment: Allow RFC1918 networks
+  loop:
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 192.168.0.0/16
+  notify: ufw reload
+
+- name: Allow IP forward for all, as recommended by microk8s.inspect
+  ansible.builtin.iptables:
+    chain: FORWARD
+    jump: ACCEPT
+    protocol: all
+  become: yes
+  notify: ufw reload
+
+- name: Deny all other incoming traffic by default
+  community.general.ufw:
+    rule: deny
+    direction: in
+    log: yes
+    state: enabled
+    comment: Default DENY incoming traffic
+  notify: ufw reload

@@ -1,0 +1,15 @@
+# ./tasks/main.yml
+---
+# tasks file for setting up Ubuntu Server to run Microk8s
+
+- name: Configure Ubuntu Server
+  import_tasks: config.yml
+
+- name: Secure SSH
+  import_tasks: ssh.yml
+
+- name: Install Packages
+  import_tasks: packages.yml
+
+- name: Configure firewall
+  import_tasks: firewall.yml

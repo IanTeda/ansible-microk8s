@@ -1,0 +1,13 @@
+---
+- name: server reboot
+  reboot:
+    msg: "Reboot initiated by Ansible 01-prevision.yml"
+
+- name: sshd restart
+  service:
+    name: sshd
+    state: restarted
+
+- name: ufw reload
+  ufw:
+    state: reloaded
