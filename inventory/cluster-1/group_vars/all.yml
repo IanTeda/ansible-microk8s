@@ -1,0 +1,28 @@
+---
+TZ: 'Australia/Sydney'
+ANSIBLE_USER: ansible
+DEFAULT_USER: ian
+GIT_USERNAME: Ian Teda
+GIT_EMAIL: ian@teda.id.au
+# systemd_dir: /etc/systemd/system
+MASTER_IP: "{{ hostvars[groups['master'][0]]['ansible_host'] | default(groups['master'][0]) }}"
+APT_PACKAGES: [ 'bash', 'curl', 'wget', 'grep', 'git', 'ufw', 'net-tools']
+MICROK8S_CHANNEL: '1.22/stable'
+DASHBOARD_ENABLED: false
+DNS_ENABLED: true
+DNS_SERVER: '192.168.8.1'
+HELM3_ENABLED: true
+HOST_ACCESS_ENABLED: false
+HOST_ACCESS_IP: '192.168.8.201'
+INGRESS_ENABLED: true
+LINKERD_ENABLED: false
+METALLB_ENABLED: true
+METALLB_IP_RANGE: '192.168.8.200-192.168.8.254'
+METRICS_SERVER_ENABLED: true
+PORTAINER_ENABLED: false
+PROMETHEUS_ENABLED: true
+RBAC_ENABLED: false
+REGISTRY_ENABLED: true
+REGISTRY_SIZED: '20Gi'
+STORAGE_ENABLED: true
+TRAEFIK_ENABLED: true

@@ -1,0 +1,7 @@
+site_name: Ansible Microk8s
+site_url: https://IanTeda.github.io/ansible-microk8s
+theme:
+  name: material
+nav:
+    - Home: index.md
+    - Users: users.md

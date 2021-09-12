@@ -1,0 +1,6 @@
+## Tasks for setting up users on the node
+- name: Configure Ansible user
+  import_tasks: ansible.yml
+
+- name: Create default user
+  import_tasks: default_user.yml

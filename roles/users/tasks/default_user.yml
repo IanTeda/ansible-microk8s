@@ -1,0 +1,22 @@
+- name: Add default user
+  ansible.builtin.user:
+    name: "{{ DEFAULT_USER }}"
+    password: "{{ 'DEFAULT_PASSWORD' | password_hash('sha512') }}"
+    update_password: on_create
+    shell: /bin/bash
+    groups: sudo
+    append: yes
+
+- name: Set git global name for users
+  remote_user: '{{ DEFAULT_USER }}'
+  community.general.git_config:
+    name: user.name
+    value: "{{ GIT_USERNAME }}"
+    scope: global
+
+- name: Set git global email for user
+  remote_user: '{{ DEFAULT_USER }}'
+  community.general.git_config:
+    name: user.email
+    value: "{{ GIT_EMAIL }}"
+    scope: global
