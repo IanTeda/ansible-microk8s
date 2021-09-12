@@ -1,0 +1,27 @@
+- name: Get nodes in cluster
+  delegate_to: "node-1"
+  delegate_facts: true
+  shell: | 
+    microk8s kubectl get node
+  changed_when: false
+  register: cluster_nodes
+
+- name: Get the join command
+  when: (inventory_hostname+'   Ready') not in cluster_nodes.stdout
+  delegate_to: "node-1" 
+  shell: |
+    microk8s add-node | head -n 2 | tail -n 1
+  delegate_facts: true
+  changed_when: false
+  register: join_command
+
+- name: Waiting for microk8s to be ready on microk8s host node
+  when: (inventory_hostname+'   Ready') not in cluster_nodes.stdout
+  delegate_to: "node-1"
+  shell: | 
+    microk8s status --wait-ready
+  changed_when: false
+
+- name: Join the nodes to the cluster
+  when: (inventory_hostname+'   Ready') not in cluster_nodes.stdout
+  command: "{{ join_command.stdout }}"

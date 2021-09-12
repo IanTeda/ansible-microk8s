@@ -1,0 +1,9 @@
+---
+- name: helm3 alias
+  command: snap alias microk8s.helm3 helm
+
+# https://microk8s.io/docs/addon-metallb > Setting up a MetalLB/Ingress service
+- name: metallb ingress
+  community.kubernetes.k8s:
+    state: present
+    definition: "{{ lookup('file', 'service-ingress.yml')  }}"

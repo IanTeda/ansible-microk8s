@@ -1,0 +1,6 @@
+---
+- name: Disable addon-ons
+  import_tasks: disable.yml
+
+- name: Enable addon-ons
+  import_tasks: enable.yml

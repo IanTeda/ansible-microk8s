@@ -1,0 +1,17 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: kubernetes-dashboard
+  namespace: kube-system
+  labels:
+    k8s-app: kubernetes-dashboard
+spec:
+  selector:
+    name: nginx-ingress-microk8s
+    k8s-app: kubernetes-dashboard
+  type: LoadBalancer
+  loadBalancerIP: 192.168.8.210
+  ports:
+    - protocol: TCP
+      port: 443
+      targetPort: 8443

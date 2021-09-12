@@ -1,0 +1,22 @@
+---
+- name: server reboot
+  reboot:
+    msg: "Reboot initiated by Ansible 01-prevision.yml"
+
+- name: ufw reload
+  ufw:
+    state: reloaded
+
+- name: sshd restart
+  service:
+    name: sshd
+    state: restarted
+
+- name: helm3 alias
+  command: snap alias microk8s.helm3 helm
+
+# https://microk8s.io/docs/addon-metallb > Setting up a MetalLB/Ingress service
+- name: metallb ingress
+  community.kubernetes.k8s:
+    state: present
+    definition: "{{ lookup('file', 'service-ingress.yml')  }}"``

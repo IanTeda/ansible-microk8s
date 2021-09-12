@@ -1,0 +1,101 @@
+- name: "Snap install Microk8s {{ MICROK8S_CHANNEL }}"
+  register: microk8s
+  community.general.snap:
+    name: "microk8s"
+    classic: yes
+    state: present
+    channel: "{{ MICROK8S_CHANNEL }}"
+
+- name: Alias kubectl
+  command: snap alias microk8s.kubectl kubectl
+  changed_when: false
+
+- name: Alias helm
+  command: snap alias microk8s.helm3 helm
+  changed_when: false
+
+- name: Add ansible user to the Microk8s group
+  ansible.builtin.user:
+    name: "{{ ANSIBLE_USER }}"
+    groups: 
+      - microk8s
+    append: "yes"
+    state: present
+
+- name: Add default user to the Microk8s group
+  ansible.builtin.user:
+    name: "{{ DEFAULT_USER }}"
+    groups: 
+      - microk8s
+    append: "yes"
+    state: present
+
+- name: Start Microk8s
+  register: startup
+  ansible.builtin.command: microk8s start
+  changed_when: false
+
+- name: Wait for microk8s to be ready
+  when: startup.changed
+  ansible.builtin.command: microk8s status --wait-ready
+  
+- name: Create ansible directory .kube
+  ansible.builtin.file:
+    path: ~{{ ansible_user }}/.kube
+    state: directory
+    owner: "{{ ansible_user }}"
+    mode: "u=rwx,g=rx,o="
+
+- name: Create default user directory .kube
+  ansible.builtin.file:
+    path: ~{{ default_user }}/.kube
+    state: directory
+    owner: "{{ default_user }}"
+    mode: "u=rwx,g=rx,o="
+
+- name: Copy Kubernetes config file to ansible home directory
+  become: yes
+  changed_when: true
+  shell: |
+    microk8s config > /home/{{ ansible_user }}/.kube/config
+  args:
+    executable: /bin/bash
+
+- name: Copy Kubernetes config file to default user home directory
+  become: yes
+  changed_when: true
+  shell: |
+    microk8s config > /home/{{ default_user }}/.kube/config
+  args:
+    executable: /bin/bash
+
+- name: Copy .kube/config to localhost
+  when: "'master' in group_names"
+  delegate_to: localhost
+  become: false # No sudo on localhost
+  command: scp -i ~/.ssh/ansible ansible@{{ master_ip }}:~/.kube/config ~/.kube/config
+
+- name: Install required nfs and iscsi packages
+  ansible.builtin.apt: 
+    name: ['nfs-common', 'open-iscsi']
+    state: latest
+    autoclean: yes
+    autoremove: yes
+
+# - name: Allow Privileged for Kubelet (required for longhorn)
+#   ansible.builtin.lineinfile:
+#     dest: /var/snap/microk8s/current/args/kubelet
+#     line: "--allow-privileged=true"
+#     state: present
+
+# - name: Allow Privileged for K8s Apiserver (required for longhorn)
+#   ansible.builtin.lineinfile:
+#     dest: /var/snap/microk8s/current/args/kube-apiserver
+#     line: "--allow-privileged=true"
+#     state: present
+
+# - name: Set File Descriptor Limits for Microk8s
+#   ansible.builtin.lineinfile:
+#     dest: /var/snap/microk8s/current/args/containerd-env
+#     line: "ulimit -n 65536"
+#     state: present

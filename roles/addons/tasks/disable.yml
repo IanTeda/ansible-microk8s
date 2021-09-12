@@ -1,0 +1,166 @@
+---
+# --- Install Microk8s Addons ---
+# https://microk8s.io/docs/addons#heading--list
+
+# https://microk8s.io/docs/addon-dns
+- name: Disable DNS
+  when: not DNS_ENABLED
+  register: disable_dns_shell
+  changed_when: ('Addon dns is already disabled.') not in disable_dns_shell.stdout
+  shell: |
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    microk8s disable dns
+  args:
+    executable: /bin/bash
+
+# https://microk8s.io/docs/addon-ingress
+- name: Disable Ingress
+  when: not INGRESS_ENABLED
+  register: disable_ingress_shell
+  changed_when: ('Addon ingress is already disabled.') not in disable_ingress_shell.stdout
+  shell: |
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    microk8s disable ingress
+  args:
+    executable: /bin/bash
+
+- name: Disable Storage
+  when: not STORAGE_ENABLED
+  register: disable_storage_shell
+  changed_when: ('Addon storage is already disabled.') not in disable_storage_shell.stdout
+  shell: |
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    microk8s disable storage
+  args:
+    executable: /bin/bash
+
+- name: Disable Registry
+  when: not REGISTRY_ENABLED
+  register: disable_registry_shell
+  changed_when: ('Addon registry is already disabled.') not in disable_registry_shell.stdout
+  shell: |
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    microk8s disable registry
+  args:
+    executable: /bin/bash
+
+- name: Disable Dashboard
+  # become: yes
+  when: not DASHBOARD_ENABLED
+  register: disable_dashboard_shell
+  changed_when: ('Addon dashboard is already disabled.') not in disable_dashboard_shell.stdout
+  shell: |
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    microk8s.disable dashboard
+  args:
+    executable: /bin/bash
+
+- name: Disable Prometheus
+  when: not PROMETHEUS_ENABLED
+  register: disable_prometheus_shell
+  changed_when: ('Addon prometheus is already disabled.') not in disable_prometheus_shell.stdout
+  shell: |
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    microk8s disable prometheus
+  args:
+    executable: /bin/bash
+
+- name: Disable Helm3
+  when: not HELM3_ENABLED
+  register: disable_helm_shell
+  changed_when: ('Addon helm3 is already disabled.') not in disable_helm_shell.stdout
+  shell: |
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    microk8s disable helm3
+  args:
+    executable: /bin/bash
+
+# https://microk8s.io/docs/addon-metallb
+- name: Disable Metallb
+  when: not METALLB_ENABLED
+  register: disable_metallb_shell
+  changed_when: ('Addon metallb is already disabled.') not in disable_metallb_shell.stdout
+  shell: |
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    microk8s disable metallb
+  args:
+    executable: /bin/bash
+
+# https://microk8s.io/docs/addon-host-access
+- name: Disable Host Access
+  when: not HOST_ACCESS_ENABLED
+  register: disable_host_shell
+  changed_when: ('Addon host-access is already disabled.') not in disable_host_shell.stdout
+  shell: |
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    microk8s disable host-access
+  args:
+    executable: /bin/bash
+
+# https://microk8s.io/docs/addon-linkerd
+- name: Disable Linkerd
+  when: not LINKERD_ENABLED
+  register: disable_linkerd_shell
+  changed_when: ('Addon linkerd is already disabled.') not in disable_linkerd_shell.stdout
+  shell: |
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    microk8s disable linkerd
+  args:
+    executable: /bin/bash
+
+# https://github.com/kubernetes/community/blob/master/contributors/design-proposals/instrumentation/metrics-server.md
+- name: Disable Metrics Server
+  when: not METRICS_SERVER_ENABLED
+  register: disable_metrics_server_shell
+  changed_when: ('Addon metric-server is already disabled.') not in disable_metrics_server_shell.stdout
+  shell: |
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    microk8s disable metrics-server
+  args:
+    executable: /bin/bash
+
+# https://microk8s.io/docs/addon-portainer
+- name: Disable Portainer
+  when: not PORTAINER_ENABLED
+  register: disable_portainer_shell
+  changed_when: ('Addon portainer is already disabled.') not in disable_portainer_shell.stdout
+  shell: |
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    microk8s disable portainer
+  args:
+    executable: /bin/bash
+
+- name: Disable Role Based Authentication Control
+  when: not RBAC_ENABLED
+  register: disable_rbac_shell
+  changed_when: ('Addon rbac is already disabled.') not in disable_rbac_shell.stdout
+  shell: |
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    microk8s disable rbac
+  args:
+    executable: /bin/bash
+
+# https://microk8s.io/docs/addons-traefik
+- name: Disable Traefik
+  when: not TRAEFIK_ENABLED
+  register: disable_traefik_shell
+  changed_when: ('Addon traefik is already disabled.') not in disable_traefik_shell.stdout
+  shell: |
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    microk8s disable traefik
+  args:
+    executable: /bin/bash

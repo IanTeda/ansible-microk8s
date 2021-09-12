@@ -1,0 +1,172 @@
+---
+# --- Install Microk8s Addons ---
+# https://microk8s.io/docs/addons#heading--list
+
+# https://microk8s.io/docs/addon-dns
+- name: Enable DNS
+  when: DNS_ENABLED
+  register: enable_dns_shell
+  changed_when: "'Addon dns is already enabled' not in enable_dns_shell.stdout"
+  shell: |
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    microk8s enable dns:{{ DNS_SERVER }}
+  args:
+    executable: /bin/bash
+
+# https://microk8s.io/docs/addon-ingress
+- name: Enable Ingress
+  when: INGRESS_ENABLED
+  register: enable_ingress_shell
+  changed_when: "'Addon ingress is already enabled' not in enable_ingress_shell.stdout"
+  shell: |
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    microk8s enable ingress
+  args:
+    executable: /bin/bash
+  #notify: kubectl service-ingress
+
+- name: Enable Storage
+  when: STORAGE_ENABLED
+  register: enable_storage_shell
+  changed_when: "'Addon storage is already enabled' not in enable_storage_shell.stdout"
+  shell: |
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    microk8s enable storage
+  args:
+    executable: /bin/bash
+
+- name: Enable Registry
+  when: REGISTRY_ENABLED
+  register: enable_registry_shell
+  changed_when: "'Addon registry is already enabled' not in enable_registry_shell.stdout"
+  shell: |
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    microk8s enable registry:size={{ REGISTRY_SIZED }}
+  args:
+    executable: /bin/bash
+
+# https://microk8s.io/docs/addon-dashboard
+- name: Enable Dashboard
+  when: DASHBOARD_ENABLED
+  register: enable_dashboard_shell
+  changed_when: "'Addon dashboard is already enabled' not in enable_dashboard_shell.stdout"
+  shell: |
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    microk8s enable dashboard
+  args:
+    executable: /bin/bash
+  #notify: kubectl ingress-dashboard
+
+- name: Enable Prometheus
+  when: PROMETHEUS_ENABLED
+  register: enable_prometheus_shell
+  changed_when: "'Addon prometheus is already enabled' not in enable_prometheus_shell.stdout"
+  shell: |
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    microk8s enable prometheus
+  args:
+    executable: /bin/bash
+
+- name: Enable Helm3
+  when: HELM3_ENABLED
+  register: enable_helm_shell
+  changed_when: "'Addon helm3 is already enabled' not in enable_helm_shell.stdout"
+  shell: |
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    microk8s enable helm3
+  args:
+    executable: /bin/bash
+  #notify: helm3 alias
+
+# https://microk8s.io/docs/addon-metallb
+- name: Enable Metallb
+  when: METALLB_ENABLED
+  register: enable_metallb_shell
+  changed_when: "'Addon metallb is already enabled' not in enable_metallb_shell.stdout"
+  shell: |
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    microk8s enable metallb:{{ METALLB_IP_RANGE }}
+  args:
+    executable: /bin/bash
+  # notify: metallb ingress
+
+# https://microk8s.io/docs/addon-host-access
+- name: Enable Host Access
+  when: HOST_ACCESS_ENABLED
+  register: enable_host_shell
+  changed_when: "'Addon host-access is already enabled' not in enable_access_shell.stdout"
+  shell: |
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    microk8s enable host-access:ip{{ HOST_ACCESS_IP }}
+  args:
+    executable: /bin/bash
+
+# https://microk8s.io/docs/addon-linkerd
+- name: Enable Linkerd
+  when: LINKERD_ENABLED
+  register: enable_linkerd_shell
+  changed_when: "'Addon linkerd is already enabled' not in enable_linkerd_shell.stdout"
+  shell: |
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    microk8s enable linkerd
+  args:
+    executable: /bin/bash
+
+# https://github.com/kubernetes/community/blob/master/contributors/design-proposals/instrumentation/metrics-server.md
+- name: Enable Metrics Server
+  when: METRICS_SERVER_ENABLED
+  register: enable_metrics_server_shell
+  changed_when: "'Addon metric-server is already enabled' not in enable_metrics_server_shell.stdout"
+  shell: |
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    microk8s enable metrics-server
+  args:
+    executable: /bin/bash
+
+# https://microk8s.io/docs/addon-portainer
+- name: Enable Portainer
+  when: PORTAINER_ENABLED
+  register: enable_portainer_shell
+  changed_when: "'Addon portainer is already enabled' not in enable_portainer_shell.stdout"
+  shell: |
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    microk8s enable portainer
+  args:
+    executable: /bin/bash
+
+- name: Enable Role Based Authentication Control
+  when: RBAC_ENABLED
+  register: enable_rbac_shell
+  changed_when: "'Addon rbac is already enabled' not in enable_rbac_shell.stdout"
+  shell: |
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    microk8s enable rbac
+  args:
+    executable: /bin/bash
+
+# https://microk8s.io/docs/addons-traefik
+- name: Enable Traefik
+  when: TRAEFIK_ENABLED
+  register: enable_traefik_shell
+  changed_when: "'Addon traefik is already enabled' not in enable_traefik_shell.stdout"
+  shell: |
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    microk8s enable traefik
+  args:
+    executable: /bin/bash
+
+#https://github.com/istvano/ansible_role_microk8s/blob/master/tasks/install.yml

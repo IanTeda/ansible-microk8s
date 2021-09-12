@@ -1,0 +1,28 @@
+# ingress-dashboard.yaml
+# https://github.com/ubuntu/microk8s/issues/906
+---
+# Ingress service to access dashboard on master node first we need to get a token
+# https://<master-node-hostname or IP>/dashboard/
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dashboard
+  namespace: kube-system
+  annotations:
+    # use the shared ingress-nginx
+    kubernetes.io/ingress.class: public
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      rewrite ^(/dashboard)$ $1/ redirect;
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /dashboard(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: kubernetes-dashboard
+            port:
+              number: 443

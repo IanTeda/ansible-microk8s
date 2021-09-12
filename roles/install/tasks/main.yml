@@ -1,0 +1,8 @@
+- name: Config server for Microk8s
+  import_tasks: config.yml
+
+- name: Install Microk8s
+  import_tasks: install.yml
+
+- name: Join nodes to cluster
+  import_tasks: join.yml

@@ -1,0 +1,16 @@
+# 02-install.yml
+# clear && ansible-playbook 02-install.yml -i inventory/cluster-1/hosts.ini
+---
+# Set up the nodes with Microk8s
+- hosts: cluster
+  gather_facts: yes
+  become: yes
+  roles:
+    - role: install
+
+# Enable Microk8s addons
+- hosts: master
+  gather_facts: no
+  become: yes
+  roles:
+    - role: addons
