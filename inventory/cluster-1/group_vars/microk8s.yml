@@ -1,9 +1,8 @@
 ---
 TZ: 'Australia/Sydney'
 ANSIBLE_USER: ansible
-DEFAULT_USER: ian
-GIT_USERNAME: Ian Teda
-GIT_EMAIL: ian@teda.id.au
+DEFAULT_USER: change_user_name
+DEFAULT_USER_PUB: 'replace with cat ~/.ssh/id_rsa.pub'
 # systemd_dir: /etc/systemd/system
 MASTER_IP: "{{ hostvars[groups['master'][0]]['ansible_host'] | default(groups['master'][0]) }}"
 APT_PACKAGES: [ 'bash', 'curl', 'wget', 'grep', 'git', 'ufw', 'net-tools']

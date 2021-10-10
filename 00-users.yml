@@ -1,10 +1,9 @@
 # users.yml
 # ansible-playbook 00-users.yml -i inventory/cluster-1/hosts.ini --ask-become-pass
 ---
-- hosts: all
+- hosts: microk8s
   gather_facts: no
   become: yes
-
   vars_prompt:
     - name: DEFAULT_PASSWORD
       prompt: "Enter default user password"
