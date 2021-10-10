@@ -1,0 +1,7 @@
+---
+# ansible-playbook 02-fstab.yml -i inventory/cluster-1/hosts.ini
+- hosts: node-1, node-2
+  gather_facts: yes
+  become: yes
+  roles:
+    - role: fstab

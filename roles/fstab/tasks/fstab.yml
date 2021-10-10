@@ -11,11 +11,10 @@
 
 - name: Mount usb  by UUID
   ansible.posix.mount:
+    src: "UUID={{ uuid.stdout }}"
     path: /media/usb-local
-    src: "UUID={{uuid.stdout}}"
     fstype: vfat
-    # opts: uid=1027,gid=100,umask=022
-    opts: rw,nosuid,dev,noexec,noatime,nodiratime,auto,nouser,async,nofai
+    opts: rw,nosuid,dev,noexec,noatime,nodiratime,auto,nouser,async,nofail
     dump: 0
     passno: 2
-    state: present
+    state: mounted

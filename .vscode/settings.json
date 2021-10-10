@@ -1,6 +1,15 @@
 {
   "cSpell.words": [
     "autoclean",
-    "posix"
+    "blkid",
+    "fstype",
+    "noatime",
+    "nodiratime",
+    "noexec",
+    "nofail",
+    "nosuid",
+    "passno",
+    "posix",
+    "vfat"
   ]
 }
