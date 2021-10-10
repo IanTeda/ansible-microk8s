@@ -1,7 +1,3 @@
-# ./tasks/main.yml
----
-# tasks file for setting up Ubuntu Server to run Microk8s
-
 - name: Configure Ubuntu Server
   import_tasks: config.yml
 

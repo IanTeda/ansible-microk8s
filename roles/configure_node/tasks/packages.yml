@@ -1,0 +1,28 @@
+# - name: Update apt sources
+#   ansible.builtin.apt: 
+#     name: aptitude 
+#     update_cache: yes 
+#     state: latest 
+#     force_apt_get: yes
+
+- name: Upgrade the OS (apt-get dist-upgrade)
+  ansible.builtin.apt:
+    update_cache: yes
+    upgrade: dist
+
+- name: Update installed packages to their latest version
+  ansible.builtin.apt:
+    name: "*"
+    state: latest
+
+- name: Install required packages
+  ansible.builtin.apt: 
+    name: "{{ INIT_PACKAGES }}"
+    state: latest
+    autoclean: yes
+    autoremove: yes
+
+- name: Remove dependencies that are no longer required
+  ansible.builtin.apt:
+    autoremove: yes
+    

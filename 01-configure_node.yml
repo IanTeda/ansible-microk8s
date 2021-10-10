@@ -1,0 +1,8 @@
+# 01-configure_node.yml
+# ansible-playbook 01-configure_node.yml -i inventory/cluster-1/hosts.ini
+---
+- hosts: microk8s
+  gather_facts: yes
+  become: yes
+  roles:
+    - role: configure_node

@@ -1,9 +1,0 @@
-# 01-nodes.yml
-# clear && ansible-playbook 01-nodes.yml -i inventory/cluster-1/hosts.ini
----
-- hosts: cluster
-  gather_facts: yes
-  become: yes
-
-  roles:
-    - role: nodes
