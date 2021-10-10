@@ -41,23 +41,23 @@
   
 - name: Create ansible directory .kube
   ansible.builtin.file:
-    path: ~{{ ansible_user }}/.kube
+    path: ~{{ ANSIBLE_USER }}/.kube
     state: directory
-    owner: "{{ ansible_user }}"
+    owner: "{{ ANSIBLE_USER }}"
     mode: "u=rwx,g=rx,o="
 
 - name: Create default user directory .kube
   ansible.builtin.file:
-    path: ~{{ default_user }}/.kube
+    path: ~{{ DEFAULT_USER }}/.kube
     state: directory
-    owner: "{{ default_user }}"
+    owner: "{{ DEFAULT_USER }}"
     mode: "u=rwx,g=rx,o="
 
 - name: Copy Kubernetes config file to ansible home directory
   become: yes
   changed_when: true
   shell: |
-    microk8s config > /home/{{ ansible_user }}/.kube/config
+    microk8s config > /home/{{ ANSIBLE_USER }}/.kube/config
   args:
     executable: /bin/bash
 
@@ -65,7 +65,7 @@
   become: yes
   changed_when: true
   shell: |
-    microk8s config > /home/{{ default_user }}/.kube/config
+    microk8s config > /home/{{ DEFAULT_USER }}/.kube/config
   args:
     executable: /bin/bash
 
@@ -73,7 +73,7 @@
   when: "'master' in group_names"
   delegate_to: localhost
   become: false # No sudo on localhost
-  command: scp -i ~/.ssh/ansible ansible@{{ master_ip }}:~/.kube/config ~/.kube/config
+  command: scp -i ~/.ssh/ansible ansible@{{ MASTER_IP }}:~/.kube/config ~/.kube/config
 
 - name: Install required nfs and iscsi packages
   ansible.builtin.apt: 
